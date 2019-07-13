@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 var campgrounds = [
   {
@@ -28,6 +30,19 @@ app.get('/', (req, res) => {
 
 app.get('/campgrounds', (req, res) => {
   res.render('campgrounds', { campgrounds });
+});
+
+app.post('/campgrounds', (req, res) => {
+  const { name, image } = req.body;
+  campgrounds.push({
+    name,
+    image
+  });
+  res.redirect('/campgrounds');
+});
+
+app.get('/campgrounds/new', (req, res) => {
+  res.render('new.ejs');
 });
 
 app.listen(3000, () => {
