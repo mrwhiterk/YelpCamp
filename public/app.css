@@ -5,3 +5,7 @@ li {
 img {
   height: 200px;
 }
+
+form a {
+  text-decoration: underline;
+}

@@ -19,6 +19,34 @@ var campgrounds = [
     name: 'Mountain Goat Rest',
     image:
       'https://static.rootsrated.com/image/upload/s--57yGFSjg--/t_rr_large_traditional/hk4f6bggvuv1imvxfz1h.jpg'
+  },
+  {
+    name: 'Salmon Creek',
+    image:
+      'https://newhampshirestateparks.reserveamerica.com/webphotos/NH/pid270015/0/540x360.jpg'
+  },
+  {
+    name: 'Granite Hill',
+    image: 'http://www.gobroomecounty.com/files/hd/Campground1.jpg'
+  },
+  {
+    name: 'Mountain Goat Rest',
+    image:
+      'https://static.rootsrated.com/image/upload/s--57yGFSjg--/t_rr_large_traditional/hk4f6bggvuv1imvxfz1h.jpg'
+  },
+  {
+    name: 'Salmon Creek',
+    image:
+      'https://newhampshirestateparks.reserveamerica.com/webphotos/NH/pid270015/0/540x360.jpg'
+  },
+  {
+    name: 'Granite Hill',
+    image: 'http://www.gobroomecounty.com/files/hd/Campground1.jpg'
+  },
+  {
+    name: 'Mountain Goat Rest',
+    image:
+      'https://static.rootsrated.com/image/upload/s--57yGFSjg--/t_rr_large_traditional/hk4f6bggvuv1imvxfz1h.jpg'
   }
 ];
 

@@ -1,16 +1,23 @@
 <% include partials/header %>
 
-<h1 class="jumbotron">Create a New Campground</h1>
+<h1 class="jumbotron text-center">Create a New Campground</h1>
 
-<form action="/campgrounds" method="post" class="col-md-6">
-  <div class="form-group">
-    <input class="form-control" type="text" name="name" placeholder="name">
+<div class="container">
+  <div class="row justify-content-center">
+    <form action="/campgrounds" method="post" class="col-md-6">
+      <div class="form-group">
+        <input class="form-control" type="text" name="name" placeholder="name">
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="image" placeholder="image url">
+      </div>
+      <div class="form-group">
+        <button class="btn btn-dark btn-lg btn-block" type="submit">submit</button>
+        <a href="/campgrounds" class="">Go Back</a>
+      </div>
+    </form>
   </div>
-  <div class="form-group">
-    <input class="form-control" type="text" name="image" placeholder="image url">
-  </div>
-  <button class="btn btn-success btn-lg" type="submit">submit</button>
-  <a href="/campgrounds" class="btn btn-lg btn-outline-dark">Go Back</a>
-</form>
+</div>
+
 
 <% include partials/footer %>
