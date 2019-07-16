@@ -1,72 +1,75 @@
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
+const express = require('express'),
+  app = express(),
+  bodyParser = require('body-parser'),
+  mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/yelp_camp', { useNewUrlParser: true });
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+
+// Schema Setup
+const campgroundSchema = new mongoose.Schema({
+  name: String,
+  image: String
+});
+
+const Campground = mongoose.model('Campground', campgroundSchema);
+
+// Campground.create(
+//   {
+//     name: 'Granite Hill',
+//     image: 'http://www.gobroomecounty.com/files/hd/Campground1.jpg'
+//   },
+//   (err, campground) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log('newly created campground');
+
+//       console.log(campground);
+//     }
+//   }
+// );
 
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: true }));
 
-var campgrounds = [
-  {
-    name: 'Salmon Creek',
-    image:
-      'https://newhampshirestateparks.reserveamerica.com/webphotos/NH/pid270015/0/540x360.jpg'
-  },
-  {
-    name: 'Granite Hill',
-    image: 'http://www.gobroomecounty.com/files/hd/Campground1.jpg'
-  },
-  {
-    name: 'Mountain Goat Rest',
-    image:
-      'https://static.rootsrated.com/image/upload/s--57yGFSjg--/t_rr_large_traditional/hk4f6bggvuv1imvxfz1h.jpg'
-  },
-  {
-    name: 'Salmon Creek',
-    image:
-      'https://newhampshirestateparks.reserveamerica.com/webphotos/NH/pid270015/0/540x360.jpg'
-  },
-  {
-    name: 'Granite Hill',
-    image: 'http://www.gobroomecounty.com/files/hd/Campground1.jpg'
-  },
-  {
-    name: 'Mountain Goat Rest',
-    image:
-      'https://static.rootsrated.com/image/upload/s--57yGFSjg--/t_rr_large_traditional/hk4f6bggvuv1imvxfz1h.jpg'
-  },
-  {
-    name: 'Salmon Creek',
-    image:
-      'https://newhampshirestateparks.reserveamerica.com/webphotos/NH/pid270015/0/540x360.jpg'
-  },
-  {
-    name: 'Granite Hill',
-    image: 'http://www.gobroomecounty.com/files/hd/Campground1.jpg'
-  },
-  {
-    name: 'Mountain Goat Rest',
-    image:
-      'https://static.rootsrated.com/image/upload/s--57yGFSjg--/t_rr_large_traditional/hk4f6bggvuv1imvxfz1h.jpg'
-  }
-];
-
-app.set('view engine', 'ejs');
+// var campgrounds = [
+//   {
+//     name: 'Mountain Goat Rest',
+//     image:
+//       'https://static.rootsrated.com/image/upload/s--57yGFSjg--/t_rr_large_traditional/hk4f6bggvuv1imvxfz1h.jpg'
+//   }
+// ];
 
 app.get('/', (req, res) => {
   res.render('landing');
 });
 
 app.get('/campgrounds', (req, res) => {
-  res.render('campgrounds', { campgrounds });
+  Campground.find({}, (err, campgrounds) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('campgrounds', { campgrounds });
+    }
+  });
 });
 
 app.post('/campgrounds', (req, res) => {
   const { name, image } = req.body;
-  campgrounds.push({
-    name,
-    image
-  });
-  res.redirect('/campgrounds');
+  Campground.create(
+    {
+      name,
+      image
+    },
+    (err, newlyCreated) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect('/campgrounds');
+      }
+    }
+  );
 });
 
 app.get('/campgrounds/new', (req, res) => {
