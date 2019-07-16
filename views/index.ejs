@@ -1,12 +1,12 @@
 <% include partials/header %>
 
-<div class="container-fluid">
+<div class="container">
   <header class="jumbotron">
     <div class="container">
       <h1>Welcome to YelpCamp!</h1>
       <p>View our handpicked campgrounds from all over the world</p>
       <p>
-        <a class="btn btn-lg btn-dark" href="/campgrounds/new">Add New Campground</a>
+        <a class="btn btn-lg btn-primary" href="/campgrounds/new">Add New Campground</a>
       </p>
     </div>
   </header>
@@ -18,12 +18,15 @@
   </div>
   <div class="row">
     <% campgrounds.forEach( campground => { %>
-      <div class="col-md-3 col-sm-6 ">
+      <div class="col-md-3 col-sm-6 text-center">
         <figure class="img-thumbnail figure">
           <img class="mx-auto d-block img-fluid figure-img" src="<%= campground.image %>" >
           <figcaption class="figure-caption text-center">
             <h4><%= campground.name %></h4>
           </figcaption>
+          <p>
+            <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary">More Info</a>
+          </p>
         </figure>
       </div>
     <% }) %>

@@ -3,14 +3,18 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/yelp_camp', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/yelp_camp', {
+  useNewUrlParser: true
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 // Schema Setup
 const campgroundSchema = new mongoose.Schema({
   name: String,
-  image: String
+  image: String,
+  description: String
 });
 
 const Campground = mongoose.model('Campground', campgroundSchema);
@@ -18,14 +22,15 @@ const Campground = mongoose.model('Campground', campgroundSchema);
 // Campground.create(
 //   {
 //     name: 'Granite Hill',
-//     image: 'http://www.gobroomecounty.com/files/hd/Campground1.jpg'
+//     image:
+//       'https://images.unsplash.com/photo-1476041800959-2f6bb412c8ce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+//     description: 'This is a huge granite hill, no bathrooms. No water.'
 //   },
 //   (err, campground) => {
 //     if (err) {
 //       console.log(err);
 //     } else {
-//       console.log('newly created campground');
-
+//       console.log('newly created campground: ');
 //       console.log(campground);
 //     }
 //   }
@@ -33,34 +38,29 @@ const Campground = mongoose.model('Campground', campgroundSchema);
 
 app.use(express.static('public'));
 
-// var campgrounds = [
-//   {
-//     name: 'Mountain Goat Rest',
-//     image:
-//       'https://static.rootsrated.com/image/upload/s--57yGFSjg--/t_rr_large_traditional/hk4f6bggvuv1imvxfz1h.jpg'
-//   }
-// ];
-
 app.get('/', (req, res) => {
   res.render('landing');
 });
 
+// INDEX
 app.get('/campgrounds', (req, res) => {
   Campground.find({}, (err, campgrounds) => {
     if (err) {
       console.log(err);
     } else {
-      res.render('campgrounds', { campgrounds });
+      res.render('index', { campgrounds });
     }
   });
 });
 
+// CREATE
 app.post('/campgrounds', (req, res) => {
-  const { name, image } = req.body;
+  const { name, image, description } = req.body;
   Campground.create(
     {
       name,
-      image
+      image,
+      description
     },
     (err, newlyCreated) => {
       if (err) {
@@ -72,8 +72,20 @@ app.post('/campgrounds', (req, res) => {
   );
 });
 
+// NEW
 app.get('/campgrounds/new', (req, res) => {
   res.render('new.ejs');
+});
+
+// SHOW
+app.get('/campgrounds/:id', (req, res) => {
+  Campground.findById(req.params.id, (err, foundCampground) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('show', { campground: foundCampground });
+    }
+  });
 });
 
 app.listen(3000, () => {
