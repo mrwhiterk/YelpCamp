@@ -13,11 +13,12 @@
     <div class="col-md-9">
       <div class="img-thumbnail">
         <img class="img-fluid" src="<%= campground.image %>">
-        <div class="caption-full row">
+        <div class="caption">
+          <h4 class="col-md-6 float-right text-right">$9.00/night</h4>
           <h4 class="col-md-6"><a href="#"><%= campground.name %></a></h4>
-          <h4 class="col-md-6 text-right">$9.00/night</h4>
+          <p><%= campground.description %></p>
         </div>
-        <p><%= campground.description %></p>
+        
       </div>
       <div class="card card-body bg-white mt-5">
         <div class="text-right mb-2">

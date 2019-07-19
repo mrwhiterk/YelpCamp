@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 seedDB();
 
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
   res.render('landing');
@@ -108,5 +108,5 @@ app.post('/campgrounds/:id/comments', (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log('app listening on port 3000!');
+  console.log('✅ port 3000!\v');
 });
