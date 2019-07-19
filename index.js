@@ -32,6 +32,12 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// passes currentUser variable to all routes as middleware
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
