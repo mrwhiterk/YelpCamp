@@ -17,6 +17,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 seedDB();
 
+// PASSPORT CONFIGURATION
+app.use(
+  require('express-session')({
+    secret: 'Ryan is the best',
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
@@ -106,6 +121,29 @@ app.post('/campgrounds/:id/comments', (req, res) => {
         }
       });
     }
+  });
+});
+
+// =========
+// AUTH ROUTES
+// =========
+
+// show form
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+
+// handle sign up
+app.post('/register', (req, res) => {
+  const newUser = new User({ username: req.body.username });
+  User.register(newUser, req.body.password, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.render('register');
+    }
+    passport.authenticate('local')(req, res, () => {
+      res.redirect('/campgrounds');
+    });
   });
 });
 
