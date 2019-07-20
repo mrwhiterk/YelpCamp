@@ -20,7 +20,7 @@
         </div>
         
       </div>
-      <div class="card card-body bg-white mt-5">
+      <div class="card card-body bg-white mt-5 mb-5">
         <div class="text-right mb-2">
           <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">
             Add New Comment
@@ -30,7 +30,7 @@
         <% campground.comments.forEach((comment) => {%>
           <div class="row">
             <div class="col-md">
-              <strong><%= comment.author %></strong>
+              <strong><%= comment.author.username %></strong>
               <span class="float-right">10 days ago</span>
               <p>
                 <%= comment.text %>
