@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
+const Comment = require('../models/comment');
 
 // INDEX
 router.get('/', (req, res) => {
@@ -73,6 +74,20 @@ router.put('/:id', (req, res) => {
       }
     }
   );
+});
+
+router.delete('/:id', (req, res) => {
+  Campground.findByIdAndRemove(req.params.id, (err, campgroundRemoved) => {
+    if (err) {
+      console.log(err);
+    }
+    Comment.deleteMany({ _id: { $in: campgroundRemoved.comments } }, err => {
+      if (err) {
+        console.log(err);
+      }
+      res.redirect('/campgrounds');
+    });
+  });
 });
 
 function isLoggedIn(req, res, next) {

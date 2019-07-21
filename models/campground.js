@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Comment = require('./comment');
 
 // Schema Setup
 const campgroundSchema = new mongoose.Schema({
@@ -19,5 +20,15 @@ const campgroundSchema = new mongoose.Schema({
     }
   ]
 });
+
+// Colt Steele's solution to remove all comments when campground is deleted.
+
+// campgroundSchema.pre('remove', async function() {
+//   await Comment.remove({
+//     _id: {
+//       $in: this.comments
+//     }
+//   });
+// });
 
 module.exports = mongoose.model('Campground', campgroundSchema);
