@@ -15,8 +15,11 @@
         <img class="img-fluid" src="<%= campground.image %>">
         <div class="caption">
           <h4 class="col-md-6 float-right text-right">$9.00/night</h4>
-          <h4 class="col-md-6"><a href="#"><%= campground.name %></a></h4>
+          <h4 class="col-md-6 pl-0"><a href="#"><%= campground.name %></a></h4>
           <p><%= campground.description %></p>
+          <p>
+            <em>Submitted By <%= campground.author.username %></em>
+          </p>
         </div>
         
       </div>
