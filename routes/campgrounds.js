@@ -51,13 +51,9 @@ router.get('/:id', (req, res) => {
 });
 
 // edit
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', checkCampgroundOwnership, (req, res) => {
   Campground.findById(req.params.id, (err, campground) => {
-    if (err) {
-      res.redirect('/campgrounds');
-    } else {
-      res.render('campgrounds/edit', { campground });
-    }
+    res.render('campgrounds/edit', { campground });
   });
 });
 
@@ -95,6 +91,24 @@ function isLoggedIn(req, res, next) {
     return next();
   }
   res.redirect('/login');
+}
+
+function checkCampgroundOwnership(req, res, next) {
+  if (req.isAuthenticated()) {
+    Campground.findById(req.params.id, (err, campground) => {
+      if (err) {
+        res.redirect('back');
+      } else {
+        if (campground.author.id.equals(req.user._id)) {
+          next();
+        } else {
+          res.redirect('back');
+        }
+      }
+    });
+  } else {
+    res.redirect('back');
+  }
 }
 
 module.exports = router;
