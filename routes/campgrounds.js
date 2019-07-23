@@ -17,13 +17,13 @@ router.get('/', (req, res) => {
 
 // CREATE
 router.post('/', middleware.isLoggedIn, (req, res) => {
-  const { name, image, description } = req.body;
+  const { name, image, description, price } = req.body;
   const author = {
     id: req.user._id,
     username: req.user.username
   };
 
-  const campground = { author, name, image, description };
+  const campground = { author, name, image, description, price };
   Campground.create(campground, (err, newlyCreated) => {
     if (err) {
       console.log(err);
