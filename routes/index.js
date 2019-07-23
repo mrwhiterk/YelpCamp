@@ -40,17 +40,10 @@ router.post(
   (req, res) => {}
 );
 
-// logout route
 router.get('/logout', (req, res) => {
   req.logout();
+  req.flash('success', 'Logged you out!');
   res.redirect('/campgrounds');
 });
-
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-}
 
 module.exports = router;
