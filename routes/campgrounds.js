@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
 const Comment = require('../models/comment');
+const middleware = require('../middleware');
 
 // INDEX
 router.get('/', (req, res) => {
@@ -15,7 +16,7 @@ router.get('/', (req, res) => {
 });
 
 // CREATE
-router.post('/', isLoggedIn, (req, res) => {
+router.post('/', middleware.isLoggedIn, (req, res) => {
   const { name, image, description } = req.body;
   const author = {
     id: req.user._id,
@@ -34,7 +35,7 @@ router.post('/', isLoggedIn, (req, res) => {
   });
 });
 
-router.get('/new', isLoggedIn, (req, res) => {
+router.get('/new', middleware.isLoggedIn, (req, res) => {
   res.render('campgrounds/new');
 });
 
@@ -51,14 +52,14 @@ router.get('/:id', (req, res) => {
 });
 
 // edit
-router.get('/:id/edit', checkCampgroundOwnership, (req, res) => {
+router.get('/:id/edit', middleware.checkCampgroundOwnership, (req, res) => {
   Campground.findById(req.params.id, (err, campground) => {
     res.render('campgrounds/edit', { campground });
   });
 });
 
 // update
-router.put('/:id', checkCampgroundOwnership, (req, res) => {
+router.put('/:id', middleware.checkCampgroundOwnership, (req, res) => {
   Campground.findByIdAndUpdate(
     req.params.id,
     req.body.campground,
@@ -72,7 +73,7 @@ router.put('/:id', checkCampgroundOwnership, (req, res) => {
   );
 });
 
-router.delete('/:id', checkCampgroundOwnership, (req, res) => {
+router.delete('/:id', middleware.checkCampgroundOwnership, (req, res) => {
   Campground.findByIdAndRemove(req.params.id, (err, campgroundRemoved) => {
     if (err) {
       console.log(err);
@@ -85,30 +86,5 @@ router.delete('/:id', checkCampgroundOwnership, (req, res) => {
     });
   });
 });
-
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-}
-
-function checkCampgroundOwnership(req, res, next) {
-  if (req.isAuthenticated()) {
-    Campground.findById(req.params.id, (err, campground) => {
-      if (err) {
-        res.redirect('back');
-      } else {
-        if (campground.author.id.equals(req.user._id)) {
-          next();
-        } else {
-          res.redirect('back');
-        }
-      }
-    });
-  } else {
-    res.redirect('back');
-  }
-}
 
 module.exports = router;
