@@ -9,20 +9,27 @@ const express = require('express'),
   Campground = require('./models/campground'),
   Comment = require('./models/comment'),
   User = require('./models/user'),
+  PORT = process.env.PORT || 3000,
   seedDB = require('./seeds');
 
 const commentRoutes = require('./routes/comments'),
   campgroundRoutes = require('./routes/campgrounds'),
   indexRoutes = require('./routes/index');
 
-mongoose.connect('mongodb+srv://mrwhiterk:hitlersmom33@main-86ecp.mongodb.net/yelp_camp?retryWrites=true&w=majority', {
-	useNewUrlParser: true,
-    useFindAndModify: false
-}).then(() => {
-	console.log('connected to DB!');
-}).catch(err => {
-	console.log('error: ', err.message);
-});
+mongoose
+  .connect(
+    'mongodb+srv://mrwhiterk:hitlersmom33@main-86ecp.mongodb.net/yelp_camp?retryWrites=true&w=majority',
+    {
+      useNewUrlParser: true,
+      useFindAndModify: false
+    }
+  )
+  .then(() => {
+    console.log('connected to DB!');
+  })
+  .catch(err => {
+    console.log('error: ', err.message);
+  });
 // mongoose.connect('mongodb://localhost:27017/yelp_camp', {
 //   useNewUrlParser: true,
 //   useFindAndModify: false
@@ -62,6 +69,6 @@ app.use('/', indexRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
 
-app.listen(3000, () => {
-  console.log('✅ port 3000!\v');
+app.listen(PORT, () => {
+  console.log(`✅ port ${PORT}!\v`);
 });
