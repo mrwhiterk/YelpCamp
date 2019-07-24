@@ -15,10 +15,18 @@ const commentRoutes = require('./routes/comments'),
   campgroundRoutes = require('./routes/campgrounds'),
   indexRoutes = require('./routes/index');
 
-mongoose.connect('mongodb://localhost:27017/yelp_camp', {
-  useNewUrlParser: true,
-  useFindAndModify: false
+mongoose.connect('mongodb+srv://mrwhiterk:hitlersmom33@main-86ecp.mongodb.net/yelp_camp?retryWrites=true&w=majority', {
+	useNewUrlParser: true,
+    useFindAndModify: false
+}).then(() => {
+	console.log('connected to DB!');
+}).catch(err => {
+	console.log('error: ', err.message);
 });
+// mongoose.connect('mongodb://localhost:27017/yelp_camp', {
+//   useNewUrlParser: true,
+//   useFindAndModify: false
+// });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
